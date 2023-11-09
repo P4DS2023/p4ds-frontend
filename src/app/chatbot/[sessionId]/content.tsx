@@ -7,6 +7,7 @@ import { EvaluationComponent } from "./_components/evaluation_menu";
 import { CaseInfo } from "./_components/case_info";
 import { createContext, useContext, useRef, useState } from "react";
 import { WordSpeedEvaluator } from "./_logic/evaluator";
+import { LiveVideo } from "./_components/live_video";
 
 import { createStore } from "zustand";
 
@@ -85,6 +86,7 @@ export const MainContent = (props: {
       )}
       <div className="flex w-1/3 flex-col items-end ">
         <EvaluationComponent clarity={3} engagement={8} speed={5} />
+        <LiveVideo />
       </div>
     </div>
     // </EvaluationStoreContext.Provider>
