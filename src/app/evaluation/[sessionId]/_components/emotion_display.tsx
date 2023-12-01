@@ -6,29 +6,35 @@ import { BsEmojiSurprise } from "react-icons/bs";
 import { BsEmojiSmile } from "react-icons/bs";
 import { ReactNode } from "react";
 
-export default function EmotionDisplay(props: { evaluation: Evaluation }) {
-  const evaluation = props.evaluation;
+export default function EmotionDisplay(props: {
+  videoSentimentAnalysis: Evaluation["videoSentimentAnalysis"];
+}) {
+  const { videoSentimentAnalysis } = props;
+
+  if (!videoSentimentAnalysis) {
+    throw new Error("videoSentimentAnalysis is undefined");
+  }
 
   const emotionScores = [
     {
       emotion: "Anger",
       icon: <BsEmojiAngry />,
-      score: evaluation.angerScore,
+      score: videoSentimentAnalysis.angerScore,
     },
     {
       emotion: "Sorrow",
       icon: <BsEmojiFrown />,
-      score: evaluation.sorrowScore,
+      score: videoSentimentAnalysis.sorrowScore,
     },
     {
       emotion: "Surprise",
       icon: <BsEmojiSurprise />,
-      score: evaluation.surpriseScore,
+      score: videoSentimentAnalysis.surpriseScore,
     },
     {
       emotion: "Joy",
       icon: <BsEmojiSmile />,
-      score: evaluation.joyScore,
+      score: videoSentimentAnalysis.joyScore,
     },
   ];
 

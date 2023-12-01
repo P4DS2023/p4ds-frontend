@@ -115,9 +115,9 @@ async function MainContent(props: { sessionId: number }) {
       sessionName.charAt(0).toUpperCase() + sessionName.slice(1);
   }
 
-  const hasVideoAnalysis = evaluation?.angerScore !== null;
+  //const hasVideoAnalysis = evaluation?.angerScore !== null;
 
-  if (hasVideoAnalysis) {
+  if (evaluation?.videoSentimentAnalysis) {
     const videoSectionId = Object.keys(sectionNamesDict).length.toString();
     sectionNamesDict[videoSectionId] = "Video Analysis";
     sectionConversationDict[videoSectionId] = [];
@@ -127,7 +127,7 @@ async function MainContent(props: { sessionId: number }) {
       createdAt: new Date(),
       sectionId: videoSectionId,
       score: -1,
-      feedback: evaluation.sentimentFeedback as string,
+      feedback: evaluation.videoSentimentAnalysis.sentimentFeedback,
     };
   }
 
@@ -137,7 +137,7 @@ async function MainContent(props: { sessionId: number }) {
       sectionEvaluationDict={sectionEvaluationDict}
       sectionNamesDict={sectionNamesDict}
       caseInfo={session.case}
-      evaluation={evaluation}
+      evaluation={evaluation!}
       sessionId={sessionId}
     />
   );

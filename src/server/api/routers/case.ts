@@ -11,6 +11,7 @@ import {
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { evaluateCase } from "~/chatbot/evaluation/evaluation";
+import { TRPCError } from "@trpc/server";
 
 export const caseRouter = createTRPCRouter({
   getAll: privateProcedure.query(async () => {

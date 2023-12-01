@@ -211,11 +211,13 @@ export const evaluations = mysqlTable("evaluations", {
     .notNull(),
   overallScore: float("overall_score").notNull(),
   overallFeedback: text("overall_feedback").notNull(),
-  joyScore: float("joy_score"),
-  angerScore: float("anger_score"),
-  sorrowScore: float("sorrow_score"),
-  surpriseScore: float("surprise_score"),
-  sentimentFeedback: text("sentiment_feedback"),
+  videoSentimentAnalysis: json("video_sentiment_analysis").$type<{
+    joyScore: number;
+    angerScore: number;
+    sorrowScore: number;
+    surpriseScore: number;
+    sentimentFeedback: string;
+  }>(),
 });
 
 export type Evaluation = typeof evaluations.$inferSelect;

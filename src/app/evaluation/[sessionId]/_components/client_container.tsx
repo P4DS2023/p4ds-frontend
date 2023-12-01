@@ -45,13 +45,10 @@ export default function ClientContainer(props: {
   const [evaluationComponent, setEvaluationComponent] =
     useState<EvaluationComponent>(sectionEvaluationDict[selectedSection]!);
 
-  const hasVideoAnalysis = evaluation?.angerScore !== null;
-
-  console.log("hasVideoAnalysis", hasVideoAnalysis);
-
   const [displayVideoAnalysis, setDisplayVideoAnalysis] =
     useState<boolean>(false);
 
+  const hasVideoAnalysis = evaluation?.videoSentimentAnalysis;
   const handleClick = (sectionId: string) => {
     if (
       !displayVideoAnalysis &&
@@ -90,7 +87,11 @@ export default function ClientContainer(props: {
           ))}
         </div>
         {!displayVideoAnalysis && <Chat conversation={conversation} />}
-        {displayVideoAnalysis && <EmotionDisplay evaluation={evaluation} />}
+        {displayVideoAnalysis && (
+          <EmotionDisplay
+            videoSentimentAnalysis={evaluation!.videoSentimentAnalysis}
+          />
+        )}
         <div className="flex w-1/3 flex-col items-end ">
           <EvaluationComponentDisplay
             evaluationComponent={evaluationComponent}

@@ -62,13 +62,15 @@ async function evaluateCase(sessionId: number) {
   const state = "CREATING_EVALUATION";
 
   // Evaluate video analysis
-  const {
-    overall_joy_score,
-    overall_anger_score,
-    overall_sorrow_score,
-    overall_surprise_score,
-    llm_sentiment_feedback,
-  } = await evaluateVideoAnalysis(sessionId);
+  // const {
+  //   overall_joy_score,
+  //   overall_anger_score,
+  //   overall_sorrow_score,
+  //   overall_surprise_score,
+  //   llm_sentiment_feedback,
+  // };
+
+  const videoAnalysisResult = await evaluateVideoAnalysis(sessionId);
 
   // Create an evaluation object
   await db.insert(evaluations).values([
@@ -77,11 +79,7 @@ async function evaluateCase(sessionId: number) {
       overallScore: overall_score,
       overallFeedback: feedback,
       state: state,
-      joyScore: overall_joy_score,
-      angerScore: overall_anger_score,
-      sorrowScore: overall_sorrow_score,
-      surpriseScore: overall_surprise_score,
-      sentimentFeedback: llm_sentiment_feedback,
+      videoSentimentAnalysis: videoAnalysisResult,
     },
   ]);
 
@@ -131,6 +129,11 @@ async function evaluateVideoAnalysis(sessionId: number) {
       orderBy: (component, { desc }) => [desc(component.createdAt)],
     });
 
+  const MIN_NUMBER_EVALUATIONS = 10;
+  if (sessionVideoAnalysisComponents.length < MIN_NUMBER_EVALUATIONS) {
+    return null;
+  }
+
   let joyscore = 0;
   let angerscore = 0;
   let sorrowscore = 0;
@@ -165,11 +168,11 @@ async function evaluateVideoAnalysis(sessionId: number) {
   const llm_sentiment_feedback = await llm.predict(llm_sentiment_prompt);
 
   return {
-    overall_joy_score,
-    overall_anger_score,
-    overall_sorrow_score,
-    overall_surprise_score,
-    llm_sentiment_feedback,
+    joyScore: overall_joy_score,
+    angerScore: overall_anger_score,
+    sorrowScore: overall_sorrow_score,
+    surpriseScore: overall_surprise_score,
+    sentimentFeedback: llm_sentiment_feedback,
   };
 }
 
